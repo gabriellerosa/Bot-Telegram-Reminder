@@ -15,7 +15,10 @@
 const TelegramBot = require('node-telegram-bot-api');
 // Importanto o moongose :p
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/reminderBot')
+mongoose.connect('mongodb://localhost:27017/reminderBot', { useNewUrlParser: true }).catch(error => {
+	console.log('Não conectei com o banco :c');
+	console.log(error);
+})
 
 // Importanto o model Reminder
 const reminderModel = require('./models/reminder');
