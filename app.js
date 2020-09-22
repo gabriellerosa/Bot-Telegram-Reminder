@@ -20,8 +20,10 @@ mongoose.connect('mongodb://localhost:27017/reminderBot', { useNewUrlParser: tru
 	console.log(error);
 })
 
-// Importanto o model Reminder
-const reminderModel = require('./models/reminder');
+// Importando o model Reminder
+const reminderModel = require('./models/reminder-model');
+// Importando o service Reminder
+const reminderService = require('./services/reminder-service');
 
 // Importando a biblioteca que vai armazenar as variaveis de ambiente :D
 const dotenv = require('dotenv');
@@ -33,7 +35,9 @@ const TOKEN = process.env.TOKEN;
 // Criando o bot
 const bot = new TelegramBot(TOKEN, {polling: true});
 
-bot.on('message', (msg) => {
+reminderService.setBot(bot);
+
+/*bot.on('message', (msg) => {
 
 	var Hi = "hi";
 	
@@ -52,5 +56,5 @@ bot.on('message', (msg) => {
 		if(err) return console.log(err);
 		else console.log('saved !');
 	});
-});
+});*/
 
