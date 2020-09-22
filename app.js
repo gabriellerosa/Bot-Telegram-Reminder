@@ -42,7 +42,7 @@ if('PROD' in process.env) {
 
 	const URL = APP_URL || 'https://reminder-me-senpai.herokuapp.com:443'
 	const OPTIONS = { webHook: PORT || 443} 
-	bot = new TelegramBot(TOKEN, OPTIONS);
+	//bot = new TelegramBot(TOKEN, OPTIONS);
 	//bot.setWebHook(`${URL}/bot${TOKEN}`);
 
 } else {
