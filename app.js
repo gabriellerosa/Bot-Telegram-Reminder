@@ -15,26 +15,40 @@
 const TelegramBot = require('node-telegram-bot-api');
 // Importando a biblioteca que vai armazenar as variaveis de ambiente :D
 const dotenv = require('dotenv');
-dotenv.config();
-
-// Pegando o token das variaveis de ambiente
-const TOKEN = process.env.TOKEN;
-const DB_URI = process.env.DB_URI;
-
 // Importanto o moongose :p
 const mongoose = require('mongoose');
-mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
-	console.log('Não conectei com o banco :c');
-	console.log(error);
-})
-
 // Importando o model Reminder
 const reminderModel = require('./models/reminder-model');
 // Importando o service Reminder
 const reminderService = require('./services/reminder-service');
 
-// Criando o bot
-const bot = new TelegramBot(TOKEN, {polling: true});
+dotenv.config();
+
+// Pegando as variaveis de ambiente
+const TOKEN = process.env.TOKEN;
+const DB_URI = process.env.DB_URI;
+const PORT = process.env.PORT
+const APP_URL = process.env.APP_URL
+
+// Conectando com o banco
+mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
+	console.log('Não conectei com o banco :c');
+	console.log(error);
+})
+
+let bot;
+// Se estiver no Heroku 
+if("PROD" in process.env) {
+
+	const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:433"
+	const OPTIONS = { webHook: PORT || 433} 
+	bot = new TelegramBot(TOKEN, OPTIONS);
+	bot.setWebHook(`${URL}/bot${TOKEN}`);
+
+} else {
+	// Criando o bot assim pois está no meu pc
+	bot = new TelegramBot(TOKEN, {polling: true});
+}
 
 reminderService.setBot(bot);
 
