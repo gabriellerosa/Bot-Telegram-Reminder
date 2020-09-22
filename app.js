@@ -38,17 +38,18 @@ mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
 
 let bot;
 // Se estiver no Heroku 
-//if('PROD' in process.env) {
+if('PROD' in process.env) {
 
-	const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:433"
+	/*const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:433"
 	const OPTIONS = { webHook: PORT || 433} 
 	bot = new TelegramBot(TOKEN, OPTIONS);
-	bot.setWebHook(`${URL}/bot${TOKEN}`);
-
-/*} else {
+	bot.setWebHook(`${URL}/bot${TOKEN}`);*/
+	console.log('entrei no if')
+} else {
 	// Criando o bot assim pois está no meu pc
 	bot = new TelegramBot(TOKEN, {polling: true});
-}*/
+	console.log('entrei no else')
+}
 
 reminderService.setBot(bot);
 
