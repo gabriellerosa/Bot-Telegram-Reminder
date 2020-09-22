@@ -38,7 +38,7 @@ mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
 
 let bot;
 // Se estiver no Heroku 
-if("PROD" in process.env) {
+if('PROD' in process.env) {
 
 	const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:433"
 	const OPTIONS = { webHook: PORT || 433} 
