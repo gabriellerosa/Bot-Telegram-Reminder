@@ -25,8 +25,8 @@ const reminderService = require('./services/reminder-service');
 dotenv.config();
 
 // Pegando as variaveis de ambiente
-const TOKEN = process.env.TOKEN;
-const DB_URI = process.env.DB_URI;
+const TOKEN = process.env.TOKEN
+const DB_URI = process.env.DB_URI
 const PORT = process.env.PORT
 const APP_URL = process.env.APP_URL
 
@@ -40,10 +40,10 @@ let bot;
 // Se estiver no Heroku 
 if('PROD' in process.env) {
 
-	const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:443"
+	const URL = APP_URL || 'https://reminder-me-senpai.herokuapp.com:443'
 	const OPTIONS = { webHook: PORT || 443} 
 	bot = new TelegramBot(TOKEN, OPTIONS);
-	bot.setWebHook(`${URL}/bot${TOKEN}`);
+	//bot.setWebHook(`${URL}/bot${TOKEN}`);
 
 } else {
 	// Criando o bot assim pois está no meu pc
