@@ -13,9 +13,17 @@
 
 // Importando a biblioteca que contém uma API para criar um bot
 const TelegramBot = require('node-telegram-bot-api');
+// Importando a biblioteca que vai armazenar as variaveis de ambiente :D
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Pegando o token das variaveis de ambiente
+const TOKEN = process.env.TOKEN;
+const DB_URI = process.env.DB_URI;
+
 // Importanto o moongose :p
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/reminderBot', { useNewUrlParser: true }).catch(error => {
+mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
 	console.log('Não conectei com o banco :c');
 	console.log(error);
 })
@@ -24,13 +32,6 @@ mongoose.connect('mongodb://localhost:27017/reminderBot', { useNewUrlParser: tru
 const reminderModel = require('./models/reminder-model');
 // Importando o service Reminder
 const reminderService = require('./services/reminder-service');
-
-// Importando a biblioteca que vai armazenar as variaveis de ambiente :D
-const dotenv = require('dotenv');
-dotenv.config();
-
-// Pegando o token das variaveis de ambiente
-const TOKEN = process.env.TOKEN;
 
 // Criando o bot
 const bot = new TelegramBot(TOKEN, {polling: true});
