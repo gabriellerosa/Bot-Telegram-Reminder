@@ -40,15 +40,14 @@ let bot;
 // Se estiver no Heroku 
 if('PROD' in process.env) {
 
-	/*const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:433"
-	const OPTIONS = { webHook: PORT || 433} 
+	const URL = APP_URL || "https://reminder-me-senpai.herokuapp.com:443"
+	const OPTIONS = { webHook: PORT || 443} 
 	bot = new TelegramBot(TOKEN, OPTIONS);
-	bot.setWebHook(`${URL}/bot${TOKEN}`);*/
-	console.log('entrei no if')
+	bot.setWebHook(`${URL}/bot${TOKEN}`);
+
 } else {
 	// Criando o bot assim pois está no meu pc
 	bot = new TelegramBot(TOKEN, {polling: true});
-	console.log('entrei no else')
 }
 
 reminderService.setBot(bot);
