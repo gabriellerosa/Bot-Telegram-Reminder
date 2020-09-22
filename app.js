@@ -41,9 +41,9 @@ let bot;
 if('PROD' in process.env) {
 
 	const URL = APP_URL || 'https://reminder-me-senpai.herokuapp.com:443'
-	const OPTIONS = { webHook: PORT || 443} 
-	//bot = new TelegramBot(TOKEN, OPTIONS);
-	//bot.setWebHook(`${URL}/bot${TOKEN}`);
+	const OPTIONS = {webHook: {port: PORT || 443}} 
+	bot = new TelegramBot(TOKEN, OPTIONS);
+	bot.setWebHook(`${URL}/bot${TOKEN}`);
 
 } else {
 	// Criando o bot assim pois está no meu pc
