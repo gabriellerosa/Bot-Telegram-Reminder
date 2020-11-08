@@ -14,12 +14,28 @@ reminder.init = function(){
 	this.bot.on('message', (msg) => {
 
 		var Hi = "hi";
-		
-		if(msg.text.toString().toLowerCase().indexOf(Hi) === 0){
-			this.bot.sendMessage(msg.chat.id, "Hello world!");
+
+		if(msg.reply_to_message == null) {
+			return;
 		}
 
-		const teste = new reminderModel({
+		if(msg.text.toLowerCase().indexOf("!lembrete") === 0) {
+			//var segundos = msg.text[msg.text.length - 1];
+
+		  var arrayWords = msg.text.split(' ');
+			console.log(arrayWords);
+
+			if(arrayWords.length > 1){
+				this.bot.sendMessage(msg.chat.id, "Daqui " + arrayWords[1] + " eu te lembro! ",
+														{reply_to_message_id: msg.reply_to_message.message_id});
+			}
+		}
+
+		/*if(msg.text.toString().toLowerCase().indexOf(Hi) === 0){
+			this.bot.sendMessage(msg.chat.id, "Hello world!");
+		}*/
+
+		/*const teste = new reminderModel({
 			id_msg: msg.message_id,
 			description: 'Me lembra de tirar o arroz do fogo',
 			groupId: msg.chat.id,
@@ -29,6 +45,6 @@ reminder.init = function(){
 		teste.save(function(err) {
 			if(err) return console.log(err);
 			else console.log('saved !');
-		});
+		});*/
 	});
 }

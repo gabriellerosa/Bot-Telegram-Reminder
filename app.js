@@ -1,7 +1,7 @@
-/* 	RODAR O MONGO 
+/* 	RODAR O MONGO
 	1) mongod  [Pra rodar o server do mongodb]
 	2) mongo [Pra rodar o mongo shell]
-	
+
 	BRINCAR NO MONGO
 	Commands :
 	show dbs - Mostrar os bancos existentes
@@ -21,6 +21,7 @@ const mongoose = require('mongoose');
 const reminderModel = require('./models/reminder-model');
 // Importando o service Reminder
 const reminderService = require('./services/reminder-service');
+const errorsHandler = require('./errors-handler/handlers');
 
 dotenv.config();
 
@@ -37,11 +38,11 @@ mongoose.connect(DB_URI, { useNewUrlParser: true }).catch(error => {
 })
 
 let bot;
-// Se estiver no Heroku 
+// Se estiver no Heroku
 if('PROD' in process.env) {
 
 	const URL = APP_URL || 'https://reminder-me-senpai.herokuapp.com:443'
-	const OPTIONS = {webHook: {port: PORT || 443}} 
+	const OPTIONS = {webHook: {port: PORT || 443}}
 	bot = new TelegramBot(TOKEN, OPTIONS);
 	bot.setWebHook(`${URL}/bot${TOKEN}`);
 
@@ -51,11 +52,11 @@ if('PROD' in process.env) {
 }
 
 reminderService.setBot(bot);
-
+errorsHandler.setBot(bot);
 /*bot.on('message', (msg) => {
 
 	var Hi = "hi";
-	
+
 	if(msg.text.toString().toLowerCase().indexOf(Hi) === 0){
 		bot.sendMessage(msg.chat.id, "Hello world!");
 	}
@@ -72,4 +73,3 @@ reminderService.setBot(bot);
 		else console.log('saved !');
 	});
 });*/
-
