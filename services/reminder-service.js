@@ -22,12 +22,32 @@ reminder.init = function(){
 		if(msg.text.toLowerCase().indexOf("!lembrete") === 0) {
 			//var segundos = msg.text[msg.text.length - 1];
 
-		  var arrayWords = msg.text.split(' ');
+		  let arrayWords = msg.text.split(' ');
 			console.log(arrayWords);
 
+			let date_lembrete = 0;
+			// Data relacionada a mensagem original
+			const date_original = msg.date;
+
 			if(arrayWords.length > 1){
-				this.bot.sendMessage(msg.chat.id, "Daqui " + arrayWords[1] + " eu te lembro! ",
+				 this.bot.sendMessage(msg.chat.id, "Daqui " + arrayWords[1] + " eu te lembro! ",
 														{reply_to_message_id: msg.reply_to_message.message_id});
+
+			   date_lembrete = (parseInt(arrayWords[1]) * 1000) + date_original;
+
+				 // Salvar no banco de dados
+				 const lembrete = new reminderModel({
+					 	id_msg: msg.reply_to_message.message_id,
+						groupId: msg.chat.id,
+						reminder_time: date_lembrete
+				 });
+
+				 lembrete.save(function(err) {
+		 				if(err)
+							return console.log(err);
+		 				else
+							console.log('saved !');
+		 		 });
 			}
 		}
 
