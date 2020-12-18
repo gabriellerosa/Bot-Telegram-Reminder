@@ -26,8 +26,8 @@ reminder.init = function(){
 			console.log(arrayWords);
 
 			let date_lembrete = 0;
-			// Data relacionada a mensagem original
-			const date_original = msg.date;
+			// Data relacionada a mensagem original, a data do telegram vem em segundos por isso troquei pra Date.now()
+			const date_original = Date.now();
 
 			if(arrayWords.length > 1){
 				 this.bot.sendMessage(msg.chat.id, "Daqui " + arrayWords[1] + " eu te lembro! ",
