@@ -41,7 +41,7 @@ async function execute(){
     await script.execute(bot)
 
     // desconectar do bot
-    process.exit();
+    //process.exit();
 }
 
 execute();
