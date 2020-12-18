@@ -12,7 +12,7 @@ script.execute = async function(bot) {
   //2) PEGAR OS LEMBRETES QUE JÁ PASSARAM DA HORA ATUAL
   dates.forEach((objReminder) => {
     //3) ENVIAR ELES POR MSG
-    await bot.sendMessage(objReminder.groupId, 'lembrando ...', {reply_to_message_id: objReminder.id_msg})
+    bot.sendMessage(objReminder.groupId, 'lembrando ...', {reply_to_message_id: objReminder.id_msg})
   })
 
   //4) EXCLUIR OS ENVIADOS DO BANCO DE DADOS
