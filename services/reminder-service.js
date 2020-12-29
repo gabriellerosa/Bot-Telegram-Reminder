@@ -25,15 +25,53 @@ reminder.init = function(){
 		  let arrayWords = msg.text.split(' ');
 			console.log(arrayWords);
 
-			let date_lembrete = 0;
 			// Data relacionada a mensagem original, a data do telegram vem em segundos por isso troquei pra Date.now()
 			const date_original = Date.now();
 
 			if(arrayWords.length > 1){
-				 this.bot.sendMessage(msg.chat.id, "Daqui " + arrayWords[1] + " eu te lembro! ",
-														{reply_to_message_id: msg.reply_to_message.message_id});
 
-			   date_lembrete = (parseInt(arrayWords[1]) * 1000) + date_original;
+				let date_lembrete_horas = 0;
+				let date_lembrete_min = 0;
+				let date_lembrete_sec = 0;
+				let error = false;
+
+				 arrayWords.forEach((word, index) => {
+
+					 		// É necessário pular a primeira casa, pois será a palavra ['!lembrete'] e queremos garantir que somente
+							//as partes que tem possibilidade de ser numéricas sejam avaliadas. Por exemplo: 1m, 1s, 1h 1m e etc
+					 		if(index === 0) {
+								return;
+							}
+
+					 		let ultimoChar = word[word.length - 1];
+							let tempo = parseInt(word.substr(0, word.length - 1), 10);
+
+							if(isNaN(tempo)) {
+								error = true;
+								return;
+							}
+
+							if(ultimoChar === 'h') {
+									date_lembrete_horas += tempo * 1000 * 60 * 60;
+
+							} else if(ultimoChar === 'm') {
+									date_lembrete_min += tempo * 1000 * 60;
+
+							} else if(ultimoChar === 's') {
+									date_lembrete_sec += tempo * 1000;
+							}
+				 });
+
+				 if(error) {
+					 this.bot.sendMessage(msg.chat.id, "Opaa! Você escreveu algo errado ai :c",
+															{reply_to_message_id: msg.message_id});
+					 return;
+				 }
+
+			   let date_lembrete = date_original + date_lembrete_min + date_lembrete_sec + date_lembrete_horas;
+
+				 this.bot.sendMessage(msg.chat.id, "Daqui " + msg.text.substr(10) + " eu te lembro! ",
+														{reply_to_message_id: msg.reply_to_message.message_id});
 
 				 // Salvar no banco de dados
 				 const lembrete = new reminderModel({
@@ -48,23 +86,11 @@ reminder.init = function(){
 		 				else
 							console.log('saved !');
 		 		 });
+			} else {
+				this.bot.sendMessage(msg.chat.id, "Por favor, me diga daqui quanto tempo eu tenho que te lembrar",
+													 {reply_to_message_id: msg.message_id});
 			}
 		}
 
-		/*if(msg.text.toString().toLowerCase().indexOf(Hi) === 0){
-			this.bot.sendMessage(msg.chat.id, "Hello world!");
-		}*/
-
-		/*const teste = new reminderModel({
-			id_msg: msg.message_id,
-			description: 'Me lembra de tirar o arroz do fogo',
-			groupId: msg.chat.id,
-			reminder_time: Date.now()
-		});
-
-		teste.save(function(err) {
-			if(err) return console.log(err);
-			else console.log('saved !');
-		});*/
 	});
 }
