@@ -22,6 +22,7 @@ const reminderModel = require('./models/reminder-model');
 // Importando o service Reminder
 const reminderService = require('./services/reminder-service');
 const errorsHandler = require('./errors-handler/handlers');
+const commandService = require('./services/command-service');
 
 dotenv.config();
 
@@ -53,23 +54,4 @@ if('PROD' in process.env) {
 
 reminderService.setBot(bot);
 errorsHandler.setBot(bot);
-/*bot.on('message', (msg) => {
-
-	var Hi = "hi";
-
-	if(msg.text.toString().toLowerCase().indexOf(Hi) === 0){
-		bot.sendMessage(msg.chat.id, "Hello world!");
-	}
-
-	const teste = new reminderModel({
-		id_msg: msg.message_id,
-		description: 'Me lembra de tirar o arroz do fogo',
-		groupId: msg.chat.id,
-		reminder_time: Date.now()
-	});
-
-	teste.save(function(err) {
-		if(err) return console.log(err);
-		else console.log('saved !');
-	});
-});*/
+commandService.setBot(bot);
