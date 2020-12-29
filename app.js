@@ -1,14 +1,14 @@
 /* 	RODAR O MONGO
-	1) mongod  [Pra rodar o server do mongodb]
-	2) mongo [Pra rodar o mongo shell]
+1) mongod  [Pra rodar o server do mongodb]
+2) mongo [Pra rodar o mongo shell]
 
-	BRINCAR NO MONGO
-	Commands :
-	show dbs - Mostrar os bancos existentes
-	use nome_do_banco - Troca para o banco que vc colocou o nome
-	show collections - Mostrar os models do bd
-	db.nomeDoModel.funçao - Chamar as funções para determinado model dentro de um db
-	ex: db.nomeDoModel.find() - mostra todos os dados que estão dentro desse model
+BRINCAR NO MONGO
+Commands :
+show dbs - Mostrar os bancos existentes
+use nome_do_banco - Troca para o banco que vc colocou o nome
+show collections - Mostrar os models do bd
+db.nomeDoModel.funçao - Chamar as funções para determinado model dentro de um db
+ex: db.nomeDoModel.find() - mostra todos os dados que estão dentro desse model
 */
 
 // Importando a biblioteca que contém uma API para criar um bot
