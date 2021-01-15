@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
 	id_msg: Number,
 	groupId: Number,
-	reminder_time: Number
+	reminder_time: Number,
+	id_pessoa: Number,
+	nome_pessoa: String
 });
 
 // Criando o modelo do lembrete

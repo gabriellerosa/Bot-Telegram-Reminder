@@ -77,7 +77,9 @@ reminder.init = function(){
 				const lembrete = new reminderModel({
 					id_msg: msg.reply_to_message.message_id,
 					groupId: msg.chat.id,
-					reminder_time: date_lembrete
+					reminder_time: date_lembrete,
+					id_pessoa: msg.from.id,
+					nome_pessoa: msg.from.first_name
 				});
 
 				lembrete.save(function(err) {
