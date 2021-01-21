@@ -19,8 +19,10 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 // Importando o model Reminder
 const reminderModel = require('./models/reminder-model');
+
 // Importando o service Reminder
 const reminderService = require('./services/reminder-service');
+const reminderDailyService = require('./services/daily-service');
 const errorsHandler = require('./errors-handler/handlers');
 const commandService = require('./services/command-service');
 
@@ -53,5 +55,6 @@ if('PROD' in process.env) {
 }
 
 reminderService.setBot(bot);
+reminderDailyService.setBot(bot);
 errorsHandler.setBot(bot);
 commandService.setBot(bot);

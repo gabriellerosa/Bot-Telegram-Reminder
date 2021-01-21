@@ -13,8 +13,6 @@ reminder.setBot = function(bot) {
 reminder.init = function(){
 	this.bot.on('message', (msg) => {
 
-		var Hi = "hi";
-
 		if(msg.reply_to_message == null || msg.text == null) {
 			return;
 		}
@@ -23,7 +21,6 @@ reminder.init = function(){
 			//var segundos = msg.text[msg.text.length - 1];
 
 			let arrayWords = msg.text.split(' ');
-			console.log(arrayWords);
 
 			// Data relacionada a mensagem original, a data do telegram vem em segundos por isso troquei pra Date.now()
 			const date_original = Date.now();
