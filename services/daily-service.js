@@ -44,10 +44,34 @@ reminder.adicionar = function(msg) {
 					console.log('saved !');
 				});
       } else {
-        this.bot.sendMessage(msg.chat.id, "Opaa! Você escreveu algo errado ai MALDÍTO :c",
+        this.bot.sendMessage(msg.chat.id, "Opaa! Você escreveu algo errado ai :c",
         {reply_to_message_id: msg.message_id});
         return;
       }
+}
+
+reminder.listar = async function(msg) {
+
+  // 1) INDENTIFICAR QUAL PESSOA LISTOU
+  let idPessoaListar = msg.from.id
+
+  // 2) CHECAR NO BANCO SEUS LEMBRENTES DE DAILYS
+  var dailies = await reminderDailyModel.find({id_pessoa: idPessoaListar})
+
+  // 3) MOSTRAR A LISTA
+  let response = ''
+
+  dailies.forEach((daily, id) => {
+    let date = new Date(daily.reminder_time)
+    let text = daily.texto.substr(0, 10)
+    if(daily.texto.length > 10) {
+      text += '...'
+    }
+
+    response += (id + 1).toString() + ' - ' + text + ' ' + date.toLocaleTimeString('pt-BR') + '\n'
+  });
+
+  this.bot.sendMessage(msg.chat.id, 'Aqui está sua lista ' + msg.from.first_name + ':\n' + response)
 }
 
 reminder.init = function() {
@@ -62,7 +86,7 @@ reminder.init = function() {
       this.adicionar(msg);
 
     } else if (msg.text.toLowerCase().indexOf("!listar") === 0) {
-      //this.listar(msg);
+      this.listar(msg);
 
     } else if (msg.text.toLowerCase().indexOf("!excluir") === 0) {
       //this.excluir(msg);
