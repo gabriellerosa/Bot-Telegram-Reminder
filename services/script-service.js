@@ -28,8 +28,8 @@ script.dailyReminder = async function(bot) {
   //2) PEGAR OS LEMBRETES QUE JÁ PASSARAM DA HORA ATUAL
   dates.forEach(async (objReminder) => {
     //3) ENVIAR ELES POR MSG
-    bot.sendMessage(objReminder.groupId, 'Ei sua(seu) porra, ' + '[' +  objReminder.nome_pessoa + ' ]' +
-        '(tg://user?id=' + objReminder.id_pessoa + ')' + '\n' +
+    bot.sendMessage(objReminder.groupId, 'Ei ' + '[' +  objReminder.nome_pessoa + ' ]' +
+        '(tg://user?id=' + objReminder.id_pessoa + ')' + ',\n' +
         objReminder.texto,
         {parse_mode:'Markdown'})
 

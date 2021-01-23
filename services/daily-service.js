@@ -1,4 +1,5 @@
 const reminderDailyModel = require('../models/reminder-daily-model');
+const notification = require('../errors-handler/standart-notification');
 
 // Exportando o reminder-service
 const reminder = module.exports = {}
@@ -38,15 +39,18 @@ reminder.adicionar = function(msg) {
 				});
 
 				lembrete.save(function(err) {
+
 					if(err)
-					return console.log(err);
+						return console.log(err);
 					else
-					console.log('saved !');
+						notification(this.bot, msg, 'Gotcha! :P')
+						console.log('saved !');
+
 				});
       } else {
-        this.bot.sendMessage(msg.chat.id, "Opaa! Você escreveu algo errado ai :c",
-        {reply_to_message_id: msg.message_id});
-        return;
+
+				notification(this.bot, msg, 'Opaa! Você escreveu algo errado ai :c')
+        return
       }
 }
 
@@ -74,6 +78,44 @@ reminder.listar = async function(msg) {
   this.bot.sendMessage(msg.chat.id, 'Aqui está sua lista ' + msg.from.first_name + ':\n' + response)
 }
 
+reminder.excluir = async function(msg) {
+
+	//!excluir 5
+	let arrayWords = msg.text.split(' ');
+	let id = arrayWords[1];
+
+	if(!isNaN(id)) {
+
+		// 1) PEGAR O ID DE QUEM QUER EXCLUIR
+		let idPessoaListar = msg.from.id;
+
+		// 2) BUSCAR NO BANCO TODOS OS REMINDERS DA PESSOA
+		var dailies = await reminderDailyModel.find({id_pessoa: idPessoaListar})
+
+		// 3) EXCLUIR ESSE REMINDER SE EXISTIR
+		if(id >= 1 && id <= dailies.length) {
+
+			let lembreteExcluir = dailies[id - 1];
+
+			try {
+				await reminderDailyModel.deleteOne({_id: lembreteExcluir._id});
+				notification(this.bot, msg, 'O lembrete ' + id + ' foi excluído com sucesso.')
+			} catch (erro){
+				notification(this.bot, msg, 'Não foi possível excluir.')
+			}
+
+		} else {
+			notification(this.bot, msg, 'Opaa! Não existe esse id nos seus lembretes.')
+			return;
+		}
+
+	} else {
+
+		notification(this.bot, msg, 'Opaa! Você escreveu algo errado ai');
+		return;
+	}
+}
+
 reminder.init = function() {
 
   this.bot.on('message', (msg) => {
@@ -89,9 +131,8 @@ reminder.init = function() {
       this.listar(msg);
 
     } else if (msg.text.toLowerCase().indexOf("!excluir") === 0) {
-      //this.excluir(msg);
+      this.excluir(msg);
 
     }
   })
-
 }

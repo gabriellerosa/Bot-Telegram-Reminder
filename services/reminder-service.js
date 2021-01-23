@@ -1,4 +1,5 @@
 const reminderModel = require('../models/reminder-model');
+const notification = require('../errors-handler/standart-notification');
 
 // Exportando o reminder-service
 const reminder = module.exports = {}
@@ -60,8 +61,7 @@ reminder.init = function(){
 				});
 
 				if(error) {
-					this.bot.sendMessage(msg.chat.id, "Opaa! Você escreveu algo errado ai :c",
-					{reply_to_message_id: msg.message_id});
+					notification(this.bot, msg, 'Opaa! Você escreveu algo errado ai :c')
 					return;
 				}
 
@@ -86,8 +86,7 @@ reminder.init = function(){
 					console.log('saved !');
 				});
 			} else {
-				this.bot.sendMessage(msg.chat.id, "Por favor, me diga daqui quanto tempo eu tenho que te lembrar",
-				{reply_to_message_id: msg.message_id});
+				notification(this.bot, msg, 'Por favor, me diga daqui quanto tempo eu tenho que te lembrar')
 			}
 		}
 
