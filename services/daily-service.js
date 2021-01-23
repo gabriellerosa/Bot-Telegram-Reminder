@@ -1,5 +1,6 @@
 const reminderDailyModel = require('../models/reminder-daily-model');
 const notification = require('../errors-handler/standart-notification');
+const moment = require('moment-timezone');
 
 // Exportando o reminder-service
 const reminder = module.exports = {}
@@ -18,27 +19,27 @@ reminder.adicionar = function(msg) {
 
       if(!isNaN(hour) && !isNaN(min)) {
 
-        let current_date = new Date();
-        let date_lembrete = new Date(current_date.getFullYear(), current_date.getMonth(),
-                                     current_date.getDate(), hour, min,
-                                     0 , 0);
+        let current_date = moment.tz('America/Bahia')
+        let date_lembrete = moment.tz('America/Bahia')
+				date_lembrete.hour(hour)
+				date_lembrete.minute(min)
 
         // checar se o dia já passou e acrescentar um dia
-        if(date_lembrete.getTime() < current_date.getTime()) {
-          date_lembrete.setDate(date_lembrete.getDate() + 1);
+        if(date_lembrete.valueOf() < current_date.valueOf()) {
+          date_lembrete.add(1, 'days');
         }
 
         let texto = arrayWords.slice(3).join(' ');
         // Salvar no banco de dados
 				const lembrete = new reminderDailyModel({
 					groupId: msg.chat.id,
-					reminder_time: date_lembrete.getTime(),
+					reminder_time: date_lembrete.valueOf(),
 					id_pessoa: msg.from.id,
 					nome_pessoa: msg.from.first_name,
           texto: texto
 				});
 
-				lembrete.save(function(err) {
+				lembrete.save(err => {
 
 					if(err)
 						return console.log(err);
@@ -66,13 +67,13 @@ reminder.listar = async function(msg) {
   let response = ''
 
   dailies.forEach((daily, id) => {
-    let date = new Date(daily.reminder_time)
+    let date = moment.tz(daily.reminder_time, 'America/Bahia')
     let text = daily.texto.substr(0, 10)
     if(daily.texto.length > 10) {
       text += '...'
     }
 
-    response += (id + 1).toString() + ' - ' + text + ' ' + date.toLocaleTimeString('pt-BR') + '\n'
+    response += (id + 1).toString() + ' - ' + text + ' - ' + date.format('H:mm') + 'h\n'
   });
 
   this.bot.sendMessage(msg.chat.id, 'Aqui está sua lista ' + msg.from.first_name + ':\n' + response)
